@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+Supplement Market
+{% endblock pagetitle %}
+
+{% block body %}
+
+<style>
+  /* Hero Section */
+  .market-hero {
+    padding: 3rem 0 2rem;
+    text-align: center;
+  }
+
+  .market-title {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  .market-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+  }
+
+  /* Product Cards */
+  .product-item {
+    margin-bottom: 2rem;
+  }
+
+  .product-card-market {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    height: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+  }
+
+  .product-card-market::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #4caf50, #66bb6a, #81c784);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .product-card-market:hover::before {
+    transform: scaleX(1);
+  }
+
+  .product-card-market:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 50px rgba(76, 175, 80, 0.3);
+    border-color: #4caf50;
+  }
+
+  /* Product Badge */
+  .product-type-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .badge-fertilizer {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    color: white;
+  }
+
+  .badge-supplement {
+    background: linear-gradient(135deg, #f44336 0%, #e57373 100%);
+    color: white;
+  }
+
+  /* Product Image */
+  .product-card-market img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 1rem 0;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card-market:hover img {
+    transform: scale(1.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Product Info */
+  .product-for-disease {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin: 1rem 0;
+  }
+
+  .product-name-text {
+    font-size: 0.95rem;
+    color: #757575;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Buy Button */
+  .buy-product-btn {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    color: white;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .buy-product-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, #388e3c 0%, #4caf50 100%);
+    color: white;
+  }
+
+  /* Container */
+  .container-custom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .content-section {
+    padding: 2rem 0 4rem;
+  }
+
+  /* Filter Section (optional enhancement) */
+  .filter-section {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .filter-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    margin: 0 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: white;
+    color: #4caf50;
+    border-color: white;
+  }
+
+  /* Icon Styles */
+  .product-icon {
+    font-size: 1.2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .market-title {
+      font-size: 2rem;
+    }
+
+    .product-card-market {
+      padding: 1.5rem;
+    }
+
+    .product-card-market img {
+      height: 220px;
+    }
+  }
+</style>
+
+<div class="market-hero">
+  <div class="container-custom">
+    <h1 class="market-title">
+      <i class="fas fa-store"></i> Supplements & Fertilizers <i class="fas fa-leaf"></i>
+    </h1>
+    <p class="market-subtitle">Premium Quality Products for Healthy Plants</p>
+  </div>
+</div>
+
+<div class="content-section">
+  <div class="container-custom">
+    <div class="row g-4">
+      {% for index in range(0, supplement_name | length) %}
+      {% if index != 4 %}
+      <div class="col-lg-3 col-md-6 product-item">
+        <div class="product-card-market">
+          <!-- Product Type Badge -->
+          {% if index==3 or index==5 or index==7 or index==11 or index==15 or index==18 or index==20 or index==23 or index==24 or index==25 or index==28 or index==38 %}
+            <span class="product-type-badge badge-fertilizer">
+              <i class="fas fa-leaf product-icon"></i> Fertilizer
+            </span>
+          {% else %}
+            <span class="product-type-badge badge-supplement">
+              <i class="fas fa-pills product-icon"></i> Supplement
+            </span>
+          {% endif %}
+
+          <!-- Product Image -->
+          <img src="{{supplement_image[index]}}" alt="Product">
+
+          <!-- Product Info -->
+          <h6 class="product-for-disease">
+            <i class="fas fa-arrow-right"></i> For {{disease[index]}}
+          </h6>
+          <p class="product-name-text">{{supplement_name[index]}}</p>
+
+          <!-- Buy Button -->
+          <a href="{{buy[index]}}" target="_blank" class="buy-product-btn">
+            <i class="fas fa-shopping-cart"></i> Buy Now
+          </a>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

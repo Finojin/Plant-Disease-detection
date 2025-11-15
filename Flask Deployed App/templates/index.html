@@ -1,0 +1,445 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+AI Engine
+{% endblock pagetitle %}
+
+{% block body %}
+<style>
+  /* Hero Section */
+  .ai-hero {
+    padding: 3rem 0 2rem;
+    text-align: center;
+  }
+
+  .ai-title {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  .ai-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+  }
+
+  /* Info Cards */
+  .info-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    height: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 5px solid #4caf50;
+  }
+
+  .info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+  }
+
+  .info-card h5 {
+    color: #2e7d32;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .info-card p,
+  .info-card ol {
+    color: #424242;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .info-card ol li {
+    margin-bottom: 0.8rem;
+  }
+
+  /* Upload Card */
+  .upload-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 3px dashed transparent;
+  }
+
+  .upload-card:hover {
+    border-color: #4caf50;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+  }
+
+  .plant-illustration {
+    width: 180px;
+    height: 180px;
+    margin: 1rem auto;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  /* File Upload Styling */
+  .upload-section {
+    margin: 2rem 0;
+  }
+
+  .file-input-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .custom-file-btn {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .custom-file-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.5);
+  }
+
+  .camera-btn {
+    background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .camera-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(33, 150, 243, 0.5);
+  }
+
+  #file-chosen {
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1rem;
+    display: block;
+  }
+
+  /* Camera Container */
+  #camera-container {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+  }
+
+  #camera-feed {
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  #capture-btn {
+    background: #ff5722;
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 50px;
+    margin-top: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  #capture-btn:hover {
+    background: #e64a19;
+    transform: translateY(-2px);
+  }
+
+  #preview {
+    border-radius: 15px;
+    margin-top: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+  }
+
+  /* Instructions Text */
+  .instructions {
+    color: #757575;
+    font-size: 1rem;
+    margin: 2rem 0 1.5rem;
+    font-weight: 500;
+  }
+
+  /* Submit Button */
+  .submit-btn {
+    background: linear-gradient(135deg, #ff9800 0%, #ffa726 100%);
+    color: white;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(255, 152, 0, 0.6);
+    background: linear-gradient(135deg, #f57c00 0%, #ff9800 100%);
+  }
+
+  /* More Info Button */
+  .info-btn {
+    background: transparent;
+    color: #4caf50;
+    padding: 0.8rem 2rem;
+    border: 2px solid #4caf50;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .info-btn:hover {
+    background: #4caf50;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(76, 175, 80, 0.3);
+  }
+
+  /* Container Spacing */
+  .content-section {
+    padding: 2rem 0;
+  }
+
+  .container-custom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .ai-title {
+      font-size: 2rem;
+    }
+
+    .info-card {
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .file-input-wrapper {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="ai-hero">
+  <div class="container-custom">
+    <h1 class="ai-title">
+      <i class="fas fa-robot"></i> AI Disease Detection Engine <i class="fas fa-brain"></i>
+    </h1>
+    <p class="ai-subtitle">Let AI Help You Detect Plant Diseases Instantly</p>
+  </div>
+</div>
+
+<div class="content-section">
+  <div class="container-custom">
+    <div class="row g-4">
+      <!-- Why Detect Disease Card -->
+      <div class="col-lg-4">
+        <div class="info-card">
+          <h5><i class="fas fa-question-circle"></i> Why Detect Plant Diseases?</h5>
+          <p>
+            Plant diseases significantly affect crop growth and yield. Early detection is crucial for implementing effective control measures and preventing economic losses. Our AI-powered system identifies diseases before symptoms become severe, enabling timely intervention and protecting your valuable crops.
+          </p>
+        </div>
+      </div>
+
+      <!-- Upload Section Card -->
+      <div class="col-lg-4">
+        <div class="upload-card">
+
+          <!-- Background illustration -->
+
+          <form action="/submit" method="POST" enctype="multipart/form-data">
+            <div class="upload-section">
+              <div class="file-input-wrapper">
+                <input type="file" id="actual-btn" hidden name="image" />
+                <label for="actual-btn" class="custom-file-btn">
+                  <i class="fas fa-upload"></i> Choose File
+                </label>
+                <label id="camera-btn" class="camera-btn">
+                  <i class="fas fa-camera"></i> Open Camera
+                </label>
+              </div>
+              <span id="file-chosen">No file chosen</span>
+            </div>
+
+            <!-- Camera Container -->
+            <div id="camera-container" style="display: none;">
+              <video id="camera-feed" width="320" height="240" autoplay></video>
+              <button type="button" id="capture-btn">
+                <i class="fas fa-camera"></i> Capture Photo
+              </button>
+            </div>
+
+            <!-- Uploaded Image Preview -->
+            <img id="preview" src="#" alt="Preview" style="display: none;" />
+
+            <p class="instructions">
+              <i class="fas fa-info-circle"></i> Upload a clear image of your plant's leaf
+            </p>
+
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i> Analyze Now
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Prevention Tips Card -->
+      <div class="col-lg-4">
+        <div class="info-card">
+          <h5><i class="fas fa-shield-alt"></i> Disease Prevention Tips</h5>
+          <ol>
+            <li>Follow good sanitation practices</li>
+            <li>Fertilize to keep plants healthy</li>
+            <li>Inspect plants before purchase</li>
+            <li>Allow soil to warm before planting</li>
+            <li>Rotate crops regularly</li>
+            <li>Ensure proper air circulation</li>
+            <li>Remove diseased foliage promptly</li>
+          </ol>
+          <a href="https://www.thespruce.com/prevent-plant-diseases-in-your-garden-2539511" 
+             target="_blank" class="info-btn">
+            <i class="fas fa-external-link-alt"></i> Learn More
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const actualBtn = document.getElementById('actual-btn');
+  const fileChosen = document.getElementById('file-chosen');
+  const preview = document.getElementById('preview');
+  const illustration = document.getElementById('illustration');
+
+  actualBtn.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      fileChosen.textContent = file.name;
+
+      // Read & display uploaded image
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        illustration.style.display = 'none'; // hide background image
+      };
+      reader.readAsDataURL(file);
+    } else {
+      fileChosen.textContent = 'No file chosen';
+      preview.style.display = 'none';
+      illustration.style.display = 'block';
+    }
+  });
+
+  let capturedFile = null;
+
+  document.getElementById('camera-btn').addEventListener('click', function () {
+    document.getElementById('camera-container').style.display = 'block';
+    startCamera();
+  });
+
+  function startCamera() {
+    const cameraFeed = document.getElementById('camera-feed');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        cameraFeed.srcObject = stream;
+      })
+      .catch(function (error) {
+        console.log('Error accessing camera: ', error);
+        alert('Unable to access camera. Please check permissions.');
+      });
+  }
+
+  document.getElementById('capture-btn').addEventListener('click', function () {
+    const cameraFeed = document.getElementById('camera-feed');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = cameraFeed.videoWidth;
+    canvas.height = cameraFeed.videoHeight;
+    ctx.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+
+    const dataUrl = canvas.toDataURL('image/jpeg');
+    const imageBlob = dataURItoBlob(dataUrl);
+    capturedFile = new File([imageBlob], "camera_image.jpg", { type: 'image/jpeg' });
+
+    fileChosen.textContent = capturedFile.name;
+    preview.src = dataUrl;
+    preview.style.display = 'block';
+    illustration.style.display = 'none';
+
+    // Stop camera stream
+    const stream = cameraFeed.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+    
+    document.getElementById('camera-container').style.display = 'none';
+  });
+
+  function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uintArray = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      uintArray[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([uintArray], { type: 'image/jpeg' });
+  }
+
+  actualBtn.addEventListener('click', function () {
+    if (capturedFile) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(capturedFile);
+      document.getElementById('actual-btn').files = dataTransfer.files;
+    }
+  });
+</script>
+
+{% endblock body %}
